@@ -1,0 +1,54 @@
+<!doctype html>
+{% load static %}
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>Onodera_Blog</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <header class="header-container">
+        <div id="logo">
+            <a href="/home"><img src="{% static '/logo.png' %}"></a>
+            Onodera_Blog
+        </div>
+        <div id="user-icon" hx-trigger="load, evt_login from:body" hx-get="{% url 'user_icon' %}" style="float: right;">
+        </div>
+        <p></p>
+        <nav>
+            <ul>
+                <li id="loc_login_frame" hx-trigger="load,evt_login from:body" hx-get="/login_frame"></li>
+                <li hx-trigger="load,evt_login from:body" hx-get="/register_frame"></li>
+                <li id="create_button" hx-trigger="load,evt_login from:body" hx-get="{% url 'create_button' %}"></li>
+                <li id="delete_blogs" hx-trigger="load,evt_login from:body" hx-get="{% url 'delete_button' %}"></li>
+                <li id="user_profile" hx-trigger="load,evt_login from:body" hx-get="{% url 'user_profile_button' %}"></li>
+            </ul>
+        </nav>
+        <div id="main_box">
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <h3>User List</h3>
+        <ul>
+            {% for user in users %}
+                <li>
+                    <img src="{{ user.icon.url }}" alt="{{ user.name }}'s icon" class="user-icon-small">
+                    {{ user.name }} <br>
+                    {{ user.profile }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <section id="hello" hx-trigger="load,evt_login from:body" hx-get="/hello"></section>
+    <section id="blogs">
+        <div id="blogs-content" hx-get="{% url 'blog_list' %}" hx-target="#blogs-content" hx-trigger="load" hx-swap="innerHTML"></div>
+    </section>
+    <footer>
+        <p>Powered by <a href="https://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
+    </footer>
+</body>
+</html>

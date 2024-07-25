@@ -1,0 +1,14 @@
+<!-- delete_blogs.html -->
+<h1>Delete Blogs</h1>
+<form method="post" action="{% url 'delete_selected' %}">
+    {% csrf_token %}
+    <ul>
+        {% for blog in blogs %}
+            <li>
+                <input type="checkbox" name="selected_blogs" value="{{ blog.id }}">
+                {{ blog.title }} - {{ blog.timeslot }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Delete Selected</button>
+</form>

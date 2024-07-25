@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Blog List</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        .blog-content {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blog List</h1>
+    <form method="get" action="" hx-get="{% url 'blog_list' %}" hx-target="#blogs-content" hx-swap="innerHTML">
+        {{ form.author.label_tag }} {{ form.author }}
+        {{ form.date.label_tag }} {{ form.date }}
+        {{ form.keyword.label_tag }} {{ form.keyword }}
+        <button type="submit">Filter</button>
+    </form>
+    <ul>
+        {% for blog in page_obj %}
+            <li>
+                <div class="title-meta">
+                    <h2>{{ blog.title }}</h2>
+                    <p class="meta">
+                        by <img src="{{ blog.author.icon.url }}" alt="Author Icon" class="author-icon"> {{ blog.author.name }} on {{ blog.timeslot }}
+                    </p>
+                </div>
+                <p class="blog-content">{{ blog.content }}</p>
+                {% if blog.photos %}
+                    <img src="{{ blog.photos.url }}" alt="Blog Photo" style="max-width:200px;">
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" hx-get="/blogs/?page=1" hx-target="#blogs" hx-swap="innerHTML">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}" hx-get="/blogs/?page={{ page_obj.previous_page_number }}" hx-target="#blogs" hx-swap="innerHTML">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" hx-get="/blogs/?page={{ page_obj.next_page_number }}" hx-target="#blogs" hx-swap="innerHTML">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" hx-get="/blogs/?page={{ page_obj.paginator.num_pages }}" hx-target="#blogs" hx-swap="innerHTML">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>

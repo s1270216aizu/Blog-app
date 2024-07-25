@@ -1,0 +1,39 @@
+<!doctype html>
+{% load static %}
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>Profile Settings</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <a href="/home"><img src="{% static '/logo.png' %}"></a>
+            Onodera_Blog
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'user_profile' %}">Profile</a></li>
+                <li><a href="{% url 'do_logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <h1>Profile Settings</h1>
+        <form class="profile-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Powered by <a href="https://html5-templates.com/" target="_blank" rel="nofollow">HTML5 Templates</a></p>
+    </footer>
+</body>
+</html>
